@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Item Repository</h1>
+        </header>
+
+        <div class="form-group">
+            <h2>Add New Item</h2>
+            <div class="input-icon">
+                <i class="fas fa-tag"></i>
+                <input type="text" id="itemName" placeholder="Item Name">
+            </div>
+            <input type="file" id="itemImage" accept="image/*">
+            <div id="imagePreview" class="image-preview"></div>
+            <br><br>
+            <button onclick="addItem()">Add Item</button>
+        </div>
+
+      
+        <h2>Items</h2>
+        <div id="itemsList" class="items-list"></div>
+    </div>
+    
+
+    <script src="script.js"></script>
+</body>
+    <script>
+    function refreshDisplay() {
+        const itemsList = document.getElementById('itemsList');
+        itemsList.innerHTML = '';
+        
+        if (repo.isEmpty()) {
+            itemsList.innerHTML = '<div class="empty-state"><i class="fas fa-inbox fa-3x"></i><p>No items added yet. Add your first item above!</p></div>';
+        } else {
+            repo.getAll().forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'item';
+                itemElement.innerHTML = `
+                    <div>
+                        <strong><i class="fas fa-cube"></i> ${item.name}</strong><br>
+                        <small><i class="far fa-clock"></i> Created: ${item.createdAt.toLocaleString()}</small>
+                        ${item.updatedAt ? `<br><small><i class="fas fa-sync"></i> Updated: ${item.updatedAt.toLocaleString()}</small>` : ''}
+                    </div>
+                    <div>
+                        <button class="edit" onclick="editItem(${item.id})"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="delete" onclick="deleteItem(${item.id})"><i class="fas fa-trash-alt"></i> Delete</button>
+                    </div>
+                `;
+                itemsList.appendChild(itemElement);
+            });
+        }
+    }
+    </script>
+</body>
+</html>
